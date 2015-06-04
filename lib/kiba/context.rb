@@ -1,8 +1,9 @@
 module Kiba
   class Context
-    def initialize(control)
+    def initialize(control, *params)
       # TODO: forbid access to control from context? use cleanroom?
       @control = control
+      @params = params
     end
 
     def pre_process(&block)
