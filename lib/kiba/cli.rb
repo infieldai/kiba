@@ -7,9 +7,9 @@ module Kiba
         puts 'Syntax: kiba your-script.etl'
         exit(-1)
       end
-      filename = args[0]
+      filename, *params = args[0]
       script_content = IO.read(filename)
-      job_definition = Kiba.parse(script_content, filename)
+      job_definition = Kiba.parse(script_content, filename, *params)
       Kiba.run(job_definition)
     end
   end
