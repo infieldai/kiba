@@ -3,14 +3,16 @@ module Kiba
     def run(control)
       # instantiate early so that error are raised before any processing occurs
       pre_processes = to_instances(control.pre_processes, true, false)
+      pre_processes.each(&:call)
+      
       sources = to_instances(control.sources)
       destinations = to_instances(control.destinations)
       transforms = to_instances(control.transforms, true)
-      post_processes = to_instances(control.post_processes, true, false)
-
-      pre_processes.each(&:call)
+      
       process_rows(sources, transforms, destinations)
       destinations.each(&:close)
+      
+      post_processes = to_instances(control.post_processes, true, false)
       post_processes.each(&:call)
     end
     
