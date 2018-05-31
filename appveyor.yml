@@ -1,18 +1,28 @@
-version: '{build}'
+version: 1.0.{build}-{branch}
 
-skip_tags: true
+cache:
+  - vendor/bundle
 
 environment:
   matrix:
-    - ruby_version: "21"
-    - ruby_version: "21-x64"
+    - RUBY_PATH: C:\Ruby25
+    - RUBY_PATH: C:\Ruby24
+    - RUBY_PATH: C:\Ruby23
+    - RUBY_PATH: C:\Ruby22
+    - RUBY_PATH: C:\Ruby21
+    - RUBY_PATH: C:\jruby-9.0.0.0
 
 install:
-  - SET PATH=C:\Ruby%ruby_version%\bin;%PATH%
-  - gem install bundler --no-document -v 1.10.5
-  - bundle install --retry=3
+  - set PATH=%RUBY_PATH%\bin;%PATH%
+  - bundle config --local path vendor/bundle
+  - bundle install
+
+build: off
+
+before_test:
+  - ruby -v
+  - gem -v
+  - bundle -v
 
 test_script:
   - bundle exec rake
-
-build: off
